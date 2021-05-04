@@ -1,8 +1,7 @@
 import React from 'react';
-import Binance from 'binance-api-node';
 import axios from 'axios';
-import { Card, Row, Col, Statistic, Button, List, Avatar, Image } from 'antd';
-import { Pie, Stock } from "@ant-design/charts";
+import { Card, Row, Col, Statistic, Button, List, Avatar } from 'antd';
+import { Pie } from "@ant-design/charts";
 import Layout from 'antd/lib/layout/layout';
 import cryptocurrencies from '../assets/cryptocurrencies.json'
 import band from '../assets/cryptos/band.svg';
@@ -119,7 +118,7 @@ class Dashboard extends React.Component {
                     loading: false,
                 })
                 const { assets } = this.state;
-                let asset_pie = Array();
+                let asset_pie: Asset[] = [];
                 for (const [key, value] of Object.entries(assets)) {
                     asset_pie.push({
                         "type": key,
@@ -179,28 +178,13 @@ class Dashboard extends React.Component {
 
 
     render() {
-        const { currency, balance, assets, binance_bal, binance_assets, coinbase_bal, coinbase_assets, loading, asset_dict } = this.state;
-        console.log(loading);
-        let asset_pie = Array();
-        for (const [key, value] of Object.entries(assets)) {
-            asset_pie.push({
-                "type": key,
-                "title": cryptocurrencies[key],
-                "value": Math.trunc(value['value'] * 100) / 100,
-            });
-
-        }
-        const sorted_assets = asset_pie.sort(function (a, b) {
-            const a_val = a['value'];
-            const b_val = b['value'];
-            return ((a_val > b_val) ? -1 : (a_val < b_val) ? 1 : 0)
-        })
+        const { currency, balance, assets, loading, asset_dict } = this.state;
         // this.fetchFinancialData(sorted_assets);
         console.log("Window size:", this.state.window_width)
         var pieConfig = {
             autoFit: true,
             appendPadding: 10,
-            data: sorted_assets,
+            data: asset_dict,
             angleField: 'value',
             colorField: 'type',
             radius: 1,

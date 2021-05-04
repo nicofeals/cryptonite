@@ -1,11 +1,9 @@
 import React from 'react';
-import { Typography } from 'antd';
-import { Layout, Image, Menu, Avatar } from 'antd';
+import { Layout, Image } from 'antd';
 import { Link } from "react-router-dom";
 import cryptonite from '../assets/cryptonite.svg';
 
 const { Header } = Layout;
-const { Title } = Typography;
 
 interface State {
     window_width: number,
