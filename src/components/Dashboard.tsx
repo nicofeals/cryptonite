@@ -29,6 +29,7 @@ interface Asset {
 
 interface State {
     loading: boolean,
+    reloading: boolean,
     currency: string,
     balance: number,
     assets: {
@@ -54,6 +55,7 @@ class Dashboard extends React.Component {
         this.fetchData.bind(this)
     }
     state: State = {
+        reloading: false,
         window_width: window.innerWidth,
         loading: true,
         currency: "",
@@ -100,13 +102,15 @@ class Dashboard extends React.Component {
     }
 
     fetchData() {
+        this.setState({
+            reloading: true,
+        })
         axios.get('https://nicofeals.pythonanywhere.com/assets')
             .then(res => {
                 const data = res.data
                 const global = data['global']
                 const binance = data['binance']
                 const coinbase = data['coinbase']
-                console.log("global:", global)
                 this.setState({
                     currency: global['balance']['currency'],
                     balance: Math.trunc(global['balance']['amount'] * 100) / 100,
@@ -134,53 +138,15 @@ class Dashboard extends React.Component {
                 })
                 this.setState({
                     asset_dict: sorted_assets,
+                    reloading: false,
                 });
             })
     }
-
-    // fetchFinancialData(assets: Asset[]) {
-    //     console.log("In function")
-    //     console.log("FETCHING DATA")
-    //     const config = {
-    //         headers: {
-    //             "X-CoinAPI-Key": "6090896D-5EC0-4613-9685-C3C626951BD2",
-    //         }
-    //     }
-    //     var url = "http://localhost:5000/ohlcv"
-    //     var count = 0;
-    //     assets.forEach(element => {
-    //         url += count === 0 ? `?asset=${element.type}` : `&asset=${element.type}`
-    //         count += 1
-    //     });
-    //     axios.get(url, config)
-    //         .then(res => {
-    //             const data = res.data;
-    //             console.log("DATA:", data)
-    //             // var ohlcv = this.state['ohlcv']
-    //             // ohlcv = res.data
-    //             this.setState({
-    //                 ohlcv: data
-    //             })
-    //         });
-    //     console.log("OHLCV:", this.state.ohlcv)
-    // }
-    // async fetchBinance() {
-    //     const client = Binance({
-    //         apiKey: 'AbzRMnOzxCaiE4721LY7iHqhLxFoEiWIkOG5VlQoN60f08CrBDXKVsNHMsGGodwA',
-    //         apiSecret: 'GlqQkn4jiaYRXM1d6W24qZuEz3d8XjAliwDXrAo0L0m7rd58XU86OX7lZwgCsMgH',
-    //     });
-    //     console.log(
-    //         await client.accountSnapshot({
-    //             "type": "SPOT"
-    //         })
-    //     );
-    // }
 
 
     render() {
         const { currency, balance, assets, loading, asset_dict } = this.state;
         // this.fetchFinancialData(sorted_assets);
-        console.log("Window size:", this.state.window_width)
         var pieConfig = {
             autoFit: true,
             appendPadding: 10,
@@ -195,15 +161,7 @@ class Dashboard extends React.Component {
             },
             interactions: [{ type: 'pie-legend-active' }, { type: 'element-active' }],
         };
-        // var stockConfig = {
-        //     width: 400,
-        //     height: 500,
-        //     data: this.state.ohlcv['1d'],
-        // }
 
-        console.log("Return")
-        console.log("State:", this.state)
-        console.log("Icons:", this.icons)
         const stat_title = "Account Balance (" + currency + ")"
         return (
             <Layout>
@@ -211,7 +169,7 @@ class Dashboard extends React.Component {
                     <Col span={24} style={{ textAlign: 'center', marginTop: 10, justifyContent: 'center'}}>
                         <Card bordered={false} loading={loading} hoverable={false} className='balance'>
                             <Statistic title={stat_title} value={balance} precision={2} />
-                            <Button style={{ marginTop: 16 }} type="primary" shape='round' onClick={this.fetchData.bind(this)}>
+                            <Button style={{ marginTop: 16 }} type="primary" shape='round' onClick={this.fetchData.bind(this)} loading={this.state.reloading}>
                                 Reload
                             </Button>
                         </Card>
