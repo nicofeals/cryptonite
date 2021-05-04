@@ -153,8 +153,8 @@ class Dashboard extends React.Component {
             data: asset_dict,
             angleField: 'value',
             colorField: 'type',
-            radius: 1,
-            legend: this.state.window_width > 500 ? true: false,
+            radius: this.state.window_width < 600 ? 0.8 : 1,
+            legend: this.state.window_width > 500 ? true: true,
             label: {
                 type: 'outer',
                 content: '{name} {percentage}',
