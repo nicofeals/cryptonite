@@ -1,26 +1,49 @@
+import './App.less';
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Sidebar from "./components/Sidebar";
+import DashboardHeader from './components/DashboardHeader';
+import DashboardFooter from './components/DashboardFooter';
+import { Layout } from 'antd';
+import Dashboard from './components/Dashboard'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const { Content } = Layout;
+
+class App extends React.Component {
+
+
+  render() {
+    return (
+
+      <Layout style={{ minHeight: '100vh' }}>
+        <Router>
+          <DashboardHeader />
+          <Layout className="site-layout">
+            <Sidebar></Sidebar>
+            <Content style={{ margin: '0 16px' }}>
+              <Switch>
+                <Route path='/'>
+                  <Redirect to="/dashboard" />
+                  <Dashboard />
+                </Route>
+                <Route path="/dashboard">
+                  <Dashboard />
+                </Route>
+              </Switch>
+            </Content>
+            
+          </Layout>
+          <DashboardFooter />
+        </Router>
+      </Layout>
+    );
+  }
 }
 
 export default App;
