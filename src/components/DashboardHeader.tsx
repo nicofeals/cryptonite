@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Image } from 'antd';
 import { Link } from "react-router-dom";
-import cryptonite from '../assets/cryptonite.svg';
+import cryptonite from '../assets/cryptonite.png';
 
 const { Header } = Layout;
 
