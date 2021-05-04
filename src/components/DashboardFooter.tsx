@@ -12,7 +12,7 @@ class DashboardFooter extends React.Component {
                 <Space direction='vertical'>
                     <Text style={{ marginBottom: '1rem', marginTop: 0 }}>Developped by <Link href="https://nicolasceccarello.tech">Nicolas Ceccarello</Link></Text>
                     <Space direction='horizontal' size='middle'>
-                        <Button type='link' href="https://github.com/nicofeals/deeplyrics"><GithubFilled style={{ fontSize: '1rem' }} /></Button>
+                        <Button type='link' href="https://github.com/nicofeals/cryptonite"><GithubFilled style={{ fontSize: '1rem' }} /></Button>
                         <Button type='link' href="https://www.linkedin.com/in/nicolasceccarello"><LinkedinFilled style={{ fontSize: '1rem' }} /></Button>
                         <Button type="link" onClick={() => this.setState({ aboutVisible: true })}>
                             <QuestionCircleFilled style={{ fontSize: '1rem' }} />
