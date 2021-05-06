@@ -45,6 +45,9 @@ interface State {
         [key: string]: object;
     },
     asset_dict: Asset[],
+    prices: {
+        [key: string]: number,
+    },
     window_width: number,
 }
 
@@ -54,6 +57,7 @@ class Dashboard extends React.Component {
         super(props);
         this.fetchData.bind(this)
     }
+
     state: State = {
         reloading: false,
         window_width: window.innerWidth,
@@ -65,6 +69,7 @@ class Dashboard extends React.Component {
         binance_assets: {},
         coinbase_bal: 0.0,
         coinbase_assets: {},
+        prices: {},
         ohlcv: {},
         asset_dict: [],
     }
@@ -101,6 +106,21 @@ class Dashboard extends React.Component {
         window.addEventListener("resize", this.handleResize.bind(this));
     }
 
+    fetchPrices() {
+        for (const [key, ] of Object.entries(this.state.assets)) {
+            axios.get('https://api.coinbase.com/v2/exchange-rates?currency=' + key)
+                .then(res => {
+                    // console.log(res.data)
+                    let prices = this.state.prices;
+                    let asset_price = parseFloat(res.data['data']['rates']['USDT']);
+                    prices[key] = asset_price < 1 ? Math.trunc(asset_price * 10000) / 10000 : asset_price < 10 ? Math.trunc(asset_price * 1000) / 1000 : Math.trunc(asset_price * 100) / 100;
+                    this.setState({
+                        prices: prices,
+                    })
+                })
+        }
+    }
+
     fetchData() {
         this.setState({
             reloading: true,
@@ -122,6 +142,7 @@ class Dashboard extends React.Component {
                     loading: false,
                 })
                 const { assets } = this.state;
+                this.fetchPrices();
                 let asset_pie: Asset[] = [];
                 for (const [key, value] of Object.entries(assets)) {
                     asset_pie.push({
@@ -145,7 +166,7 @@ class Dashboard extends React.Component {
 
 
     render() {
-        const { currency, balance, assets, loading, asset_dict } = this.state;
+        const { currency, balance, assets, loading, asset_dict, prices } = this.state;
         // this.fetchFinancialData(sorted_assets);
         var pieConfig = {
             autoFit: true,
@@ -190,7 +211,7 @@ class Dashboard extends React.Component {
                                     <List.Item.Meta
                                         avatar={<Avatar src={this.icons[item.type.toLowerCase()]} shape='square' size='large' />}
                                         title={<a href="https://ant.design"><strong>{item.type}</strong> {item.title}</a>}
-                                        description={<p>{Math.trunc(assets[item.type]['amount'] * 10000) / 10000} | <strong>{Math.trunc(assets[item.type]['value'] * 100) / 100}</strong> {currency}</p>}
+                                        description={<p><strong>{prices[item.type]}</strong>$ | {Math.trunc(assets[item.type]['amount'] * 10000) / 10000} | <strong>{Math.trunc(assets[item.type]['value'] * 100) / 100}</strong> {currency}</p>}
                                     />
                                 </List.Item>
                             )}
