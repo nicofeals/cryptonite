@@ -17,9 +17,12 @@ import doge from '../assets/cryptos/doge.svg';
 import eth from '../assets/cryptos/eth.svg';
 import forth from '../assets/cryptos/forth.svg';
 import grt from '../assets/cryptos/grt.svg';
+import matic from '../assets/cryptos/matic.svg';
 import mkr from '../assets/cryptos/mkr.svg';
 import nu from '../assets/cryptos/nu.svg';
+import shib from '../assets/cryptos/shib.svg';
 import usdt from '../assets/cryptos/usdt.svg';
+import vet from '../assets/cryptos/vet.svg';
 import xlm from '../assets/cryptos/xlm.svg';
 import './Dashboard.less';
 
@@ -91,9 +94,12 @@ class Dashboard extends React.Component {
         "eth": eth,
         "forth": forth,
         "grt": grt,
+        "matic": matic,
         "mkr": mkr,
         "nu": nu,
+        "shib": shib,
         "usdt": usdt,
+        "vet": vet,
         "xlm": xlm,
     }
 
