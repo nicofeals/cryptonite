@@ -24,6 +24,10 @@ import shib from '../assets/cryptos/shib.svg';
 import usdt from '../assets/cryptos/usdt.svg';
 import vet from '../assets/cryptos/vet.svg';
 import xlm from '../assets/cryptos/xlm.svg';
+import amp from '../assets/cryptos/amp.svg';
+import clv from '../assets/cryptos/clv.svg';
+import egld from '../assets/cryptos/egld.svg';
+import fet from '../assets/cryptos/fet.svg';
 import './Dashboard.less';
 
 interface Asset {
@@ -101,6 +105,10 @@ class Dashboard extends React.Component {
         "usdt": usdt,
         "vet": vet,
         "xlm": xlm,
+        "amp": amp,
+        "clv": clv,
+        "egld": egld,
+        "fet": fet,
     }
 
     handleResize(e) {
@@ -188,6 +196,7 @@ class Dashboard extends React.Component {
 
     render() {
         const { currency, balance, assets, loading, asset_dict, prices, deposit } = this.state;
+
         // this.fetchFinancialData(sorted_assets);
         var pieConfig = {
             autoFit: true,
