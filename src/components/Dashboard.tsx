@@ -142,7 +142,7 @@ class Dashboard extends React.Component {
     }
 
     fetchDeposit() {
-        axios.get('https://nicofeals.pythonanywhere.com/deposit')
+        axios.get('https://ceccarellonico.eu.pythonanywhere.com/deposit')
             .then(res => {
                 this.setState({
                     deposit: res.data['deposit']
@@ -154,7 +154,7 @@ class Dashboard extends React.Component {
         this.setState({
             reloading: true,
         })
-        axios.get('https://nicofeals.pythonanywhere.com/assets')
+        axios.get('https://ceccarellonico.eu.pythonanywhere.com/assets')
             .then(res => {
                 const data = res.data
                 const global = data['global']
